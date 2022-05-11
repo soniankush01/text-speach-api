@@ -23,11 +23,7 @@ public class VoiceDataController {
 
     @PostMapping(value = "/voice/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity uploadFile(@RequestParam("file") MultipartFile file, @RequestPart("employeeData") String employeeData) throws IOException {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        VoiceData voiceData =  VoiceDataService.getEmployee(employeeData);
-        voiceData.setData(file.getBytes());
-        voiceData.setFileName(fileName);
-        voiceData.setFileType(file.getContentType());
+
 
         String message = "";
 
