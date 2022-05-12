@@ -17,15 +17,15 @@ public class EmployeeService {
 
     public Employee findEmployee(String input){
         //uid
-        if(input.startsWith("u")){
+        if(input.matches(".*[a-zA-Z].*") && input.matches(".*[0-9].*")){
             return employeeRepository.findByUid(input);
         }//email
-        else if(input.startsWith("e")){
-            input = input.substring(1);
+        else if(input.endsWith(".com")){
+
             return employeeRepository.findByEmail(input);
         }// emp id
-        else if(input.startsWith("ei")){
-            input = input.substring(2);
+        else if(input.matches("^[0-9]*$")){
+
             Integer empId = Integer.parseInt(input);
             return employeeRepository.findByEmployeeId(empId);
         }else{
