@@ -1,6 +1,8 @@
 package com.wellsfargo.textspeachapi.controller;
 
 
+import com.wellsfargo.textspeachapi.model.Employee;
+import com.wellsfargo.textspeachapi.model.VoiceData;
 import com.wellsfargo.textspeachapi.service.VoiceDataService;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +18,7 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -43,5 +46,29 @@ public class VoiceDataControllerTest {
                 .file(employeeDate).contentType(MediaType.MULTIPART_FORM_DATA_VALUE);
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isOk());
+    }
+    @Test
+    public void test_voice_download_with_status_ok() throws Exception {
+        VoiceData voiceData =new VoiceData();
+        byte[] byteArr = {1,2};
+        voiceData.setData(byteArr);
+        voiceData.setEmail("abc@test.com");
+        when(voiceDataService.downloadVoice("u12345")).thenReturn(voiceData);
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/voice/u12345");
+
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isOk());
+    }
+    @Test
+    public void test_voice_download_with_no_content() throws Exception {
+        VoiceData voiceData = null;
+
+        when(voiceDataService.downloadVoice("u12345")).thenReturn(voiceData);
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/voice/u12345");
+
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().is2xxSuccessful());
     }
 }
