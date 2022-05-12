@@ -19,9 +19,9 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/employee/{input}")
-    public ResponseEntity findEmployee(@PathVariable("input") String input){
-        Employee employee = employeeService.findEmployee(input);
+    @GetMapping("/employee/{uid}")
+    public ResponseEntity findEmployee(@PathVariable("uid") String uid){
+        Employee employee = employeeService.findEmployee(uid);
         if(null!=employee) {
             return new ResponseEntity<>(employee, HttpStatus.OK);
         }else {
