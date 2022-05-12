@@ -30,14 +30,35 @@ public class VoiceDataService {
         voiceDataRepository.save(voiceData);
     }
 
-    public VoiceData downloadVoice(Long uid){
-        return voiceDataRepository.findById(uid).get();
+    public VoiceData downloadVoice(String input){
+        //uid
+        if(input.matches(".*[a-zA-Z].*") && input.matches(".*[0-9].*")){
+            return voiceDataRepository.findByUid(input);
+        }//email
+        else if(input.endsWith(".com")){
+
+            return voiceDataRepository.findByEmail(input);
+        }// emp id
+        else if(input.matches("^[0-9]*$")){
+
+            Integer empId = Integer.parseInt(input);
+            return voiceDataRepository.findByEmployeeId(empId);
+        }else{
+            return null;
+        }
+
     }
 
     public static VoiceData getEmployee(String empData){
         Gson gson = new Gson();
-        VoiceData voiceData = gson.fromJson(empData, VoiceData.class);
-        return voiceData;
+        try {
+            VoiceData voiceData = gson.fromJson(empData, VoiceData.class);
+            return voiceData;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
 
     }
+
 }

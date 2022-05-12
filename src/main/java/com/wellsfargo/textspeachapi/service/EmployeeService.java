@@ -15,22 +15,9 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
      }
 
-    public Employee findEmployee(String input){
-        //uid
-        if(input.matches(".*[a-zA-Z].*") && input.matches(".*[0-9].*")){
-            return employeeRepository.findByUid(input);
-        }//email
-        else if(input.endsWith(".com")){
+    public Employee findEmployee(String uid){
+        return employeeRepository.findByUid(uid);
 
-            return employeeRepository.findByEmail(input);
-        }// emp id
-        else if(input.matches("^[0-9]*$")){
-
-            Integer empId = Integer.parseInt(input);
-            return employeeRepository.findByEmployeeId(empId);
-        }else{
-            return null;
-        }
     }
 }
 

@@ -1,6 +1,7 @@
 package com.wellsfargo.textspeachapi.controller;
 
 import com.google.cloud.texttospeech.v1.*;
+import com.google.gson.Gson;
 import com.google.protobuf.ByteString;
 import com.wellsfargo.textspeachapi.model.VoiceData;
 import com.wellsfargo.textspeachapi.service.VoiceDataService;
@@ -25,10 +26,7 @@ public class VoiceDataController {
 
     @PostMapping(value = "/voice/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity uploadFile(@RequestParam("file") MultipartFile file, @RequestPart("employeeData") String employeeData) throws IOException {
-
-
         String message = "";
-
         try {
             voiceDataService.uploadVoice(file,employeeData);
 
@@ -40,40 +38,19 @@ public class VoiceDataController {
         }
     }
 
-    @GetMapping("/voice/{uid}")
-    public ResponseEntity<byte[]> downloadVoice(@PathVariable Long uid) {
-        VoiceData voiceData = voiceDataService.downloadVoice(uid);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + voiceData.getFileName() + "\"")
-                .body(voiceData.getData());
-    }
-
-    @PostMapping("/voice/text-to-speech")
-    public ResponseEntity getText(@RequestParam("textToRecord") String textToRecord) throws IOException {
-
-
-        try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
-            // Set the text input to be synthesized
-            SynthesisInput input = SynthesisInput.newBuilder().setText(textToRecord).build();
-
-            // Build the voice request; languageCode = "en_us"
-            VoiceSelectionParams voice = VoiceSelectionParams.newBuilder().setLanguageCode("en-US")
-                    .setSsmlGender(SsmlVoiceGender.FEMALE)
-                    .build();
-
-            // Select the type of audio file you want returned
-            AudioConfig audioConfig = AudioConfig.newBuilder().setAudioEncoding(AudioEncoding.MP3) // MP3 audio.
-                    .build();
-
-            // Perform the text-to-speech request
-            SynthesizeSpeechResponse response = textToSpeechClient.synthesizeSpeech(input, voice, audioConfig);
-
-            // Get the audio contents from the response
-            ByteString audioContents = response.getAudioContent();
-            //convert to byte array and save in DB.
+    @GetMapping("/voice/{input}")
+    public ResponseEntity<byte[]> downloadVoice(@PathVariable String input) {
+        VoiceData voiceData = voiceDataService.downloadVoice(input);
+        if (null != voiceData) {
+            Gson gson = new Gson();
+            String data = gson.toJson(voiceData);
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + voiceData.getFileName() + "\"")
+                    .header("empData", data)
+                    .body(voiceData.getData());
+        } else {
+            return new ResponseEntity("Not Record Found", HttpStatus.NO_CONTENT);
         }
-
-        return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
 }

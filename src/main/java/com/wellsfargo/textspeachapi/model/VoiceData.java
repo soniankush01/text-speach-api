@@ -2,6 +2,7 @@ package com.wellsfargo.textspeachapi.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -13,9 +14,9 @@ import javax.persistence.*;
 public class VoiceData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "serial")
-    private Long uid;
+    private Integer employeeId ;
+
+    private String uid;
     private String firstName;
     private String lastName;
     private String email;
