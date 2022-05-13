@@ -1,20 +1,18 @@
 package com.wellsfargo.textspeachapi.controller;
 
-import com.google.cloud.texttospeech.v1.*;
 import com.google.gson.Gson;
-import com.google.protobuf.ByteString;
 import com.wellsfargo.textspeachapi.model.VoiceData;
 import com.wellsfargo.textspeachapi.service.VoiceDataService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+@CrossOrigin(origins = "*")
 @RestController
 public class VoiceDataController {
 
