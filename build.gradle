@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.6.7'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'jacoco'
 }
 
 group = 'com.wellsfargo'
@@ -38,3 +39,35 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+jacoco {
+	toolVersion = "0.8.5"
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled true
+		csv.enabled true
+		html.enabled true
+	}
+	afterEvaluate{
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, excludes: [])
+		}))
+	}
+}
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			limit {
+				counter = 'LINE'
+				minimum = 0.00
+			}
+			limit {
+				counter = 'BRANCH'
+				minimum = 0.00
+			}
+		}
+	}
+}
+build.dependsOn jacocoTestReport
+check.dependsOn jacocoTestCoverageVerification
