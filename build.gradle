@@ -51,7 +51,8 @@ jacocoTestReport {
 	}
 	afterEvaluate{
 		classDirectories.setFrom(files(classDirectories.files.collect {
-			fileTree(dir: it, excludes: [])
+			fileTree(dir: it, excludes: ['com/wellsfargo/textspeachapi/model/*',
+										'com/wellsfargo/textspeachapi/TextSpeachApiApplication.java'])
 		}))
 	}
 }
@@ -60,7 +61,7 @@ jacocoTestCoverageVerification {
 		rule {
 			limit {
 				counter = 'LINE'
-				minimum = 0.00
+				minimum = 0.600
 			}
 			limit {
 				counter = 'BRANCH'
