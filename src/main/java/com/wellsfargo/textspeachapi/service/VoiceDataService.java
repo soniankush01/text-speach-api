@@ -84,6 +84,7 @@ public class VoiceDataService {
                 voiceData1.setLastName(voiceData.getLastName());
                 voiceData1.setPreferredName(voiceData.getPreferredName());
                 voiceData1.setOptIn(voiceData.isOptIn());
+                voiceData1.setFileName(voiceData.getFileName());
                 return voiceData1;
              }
         return null;
