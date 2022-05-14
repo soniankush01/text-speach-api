@@ -9,6 +9,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Optional;
+
 import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -22,9 +24,9 @@ public class EmployeeServiceTest {
     @Test
     public void get_employee_test(){
         Employee employee = new Employee();
-        employee.setUid("u8173");
-        Mockito.when(employeeRepository.findByUid("u8173")).thenReturn(employee);
-        Employee result  = employeeService.findEmployee(employee.getUid());
-        assertEquals("u8173",result.getUid());
+        employee.setEmployeeId(8173);
+        Mockito.when(employeeRepository.findById(8173)).thenReturn(Optional.of(employee));
+        Optional<Employee> result  = employeeService.findEmployee(employee.getEmployeeId());
+        assertEquals(Optional.of(8173),Optional.of(result.get().getEmployeeId()));
     }
 }

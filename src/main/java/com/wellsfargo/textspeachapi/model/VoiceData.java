@@ -26,6 +26,7 @@ public class VoiceData {
     private String fileType;
     @Type(type="org.hibernate.type.BinaryType")
     private byte[] data;
+    private boolean optIn;
 
 
     public VoiceData(String fileName, String fileType, byte[] bytes) {
