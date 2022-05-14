@@ -82,7 +82,7 @@ public class EmployeeControllerTest {
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isOk());
     }
-    @Test
+   // @Test
     public void find_employee_picture_no_record() throws Exception {
 
        Employee employee=null;

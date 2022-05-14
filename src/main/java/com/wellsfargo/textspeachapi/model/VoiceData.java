@@ -3,11 +3,13 @@ package com.wellsfargo.textspeachapi.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
 @Entity
+@DynamicUpdate(true)
 @Table(name = "voice_data")
 @Data
 @AllArgsConstructor

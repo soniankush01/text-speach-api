@@ -42,7 +42,7 @@ public class VoiceDataControllerTest {
         MockMultipartFile employeeDate = new MockMultipartFile("employeeData",null,"application/json",
                 "{\"firstName\":\"Tribhuwan\",\"lastName\":\"Mahto\",\"email\":\"tribhuwan@wellsfargo.com\",\"legalName\":\"TribhuwanMahto\",\"preferredName\":\"Mahto\"}".getBytes());
         RequestBuilder requestBuilder = MockMvcRequestBuilders.multipart(
-                "/voice/upload").file(file)
+                "/user/uploadRecord").file(file)
                 .file(employeeDate).contentType(MediaType.MULTIPART_FORM_DATA_VALUE);
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isOk());
@@ -53,9 +53,11 @@ public class VoiceDataControllerTest {
         byte[] byteArr = {1,2};
         voiceData.setData(byteArr);
         voiceData.setEmail("abc@test.com");
+        voiceData.setOptIn(Boolean.TRUE);
+        voiceData.setEmployeeId(12234);
         when(voiceDataService.downloadVoice("u12345")).thenReturn(voiceData);
 
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/voice/u12345");
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/user/getRecord/u12345");
 
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isOk());
@@ -66,7 +68,7 @@ public class VoiceDataControllerTest {
 
         when(voiceDataService.downloadVoice("u12345")).thenReturn(voiceData);
 
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/voice/u12345");
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/user/getRecord/u12345");
 
         mockMvc.perform(requestBuilder)
                 .andExpect(status().is2xxSuccessful());

@@ -1,6 +1,7 @@
 package com.wellsfargo.textspeachapi.service;
 
 import com.google.gson.Gson;
+import com.wellsfargo.textspeachapi.model.Employee;
 import com.wellsfargo.textspeachapi.model.VoiceData;
 import com.wellsfargo.textspeachapi.repository.VoiceDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 public class VoiceDataService {
@@ -27,6 +29,7 @@ public class VoiceDataService {
         voiceData.setData(file.getBytes());
         voiceData.setFileName(fileName);
         voiceData.setFileType(file.getContentType());
+        voiceData.setOptIn(Boolean.TRUE);
         voiceDataRepository.save(voiceData);
     }
 
@@ -71,9 +74,7 @@ public class VoiceDataService {
 
     private VoiceData getVoiceData(VoiceData voiceData) {
         if(null!= voiceData){
-            if(voiceData.isOptIn()){
-                return voiceData;
-            }else{
+
                 VoiceData voiceData1 = new VoiceData();
                 voiceData1.setEmail(voiceData.getEmail());
                 voiceData1.setEmployeeId(voiceData.getEmployeeId());
@@ -82,10 +83,21 @@ public class VoiceDataService {
                 voiceData1.setUid(voiceData.getUid());
                 voiceData1.setLastName(voiceData.getLastName());
                 voiceData1.setPreferredName(voiceData.getPreferredName());
+                voiceData1.setOptIn(voiceData.isOptIn());
                 return voiceData1;
-            }
-        }
+             }
         return null;
     }
 
+    public boolean updateOptIn(VoiceData data) {
+        VoiceData voiceData = voiceDataRepository.findById(data.getEmployeeId()).get();
+        if(null !=voiceData){
+            voiceData.setOptIn(data.isOptIn());
+             voiceDataRepository.save(voiceData);
+             return true;
+        }else{
+            return false;
+        }
+
+    }
 }

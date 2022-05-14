@@ -1,6 +1,7 @@
 package com.wellsfargo.textspeachapi.controller;
 
 import com.google.gson.Gson;
+import com.wellsfargo.textspeachapi.model.Employee;
 import com.wellsfargo.textspeachapi.model.VoiceData;
 import com.wellsfargo.textspeachapi.service.VoiceDataService;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +23,7 @@ public class VoiceDataController {
         this.voiceDataService = voiceDataService;
     }
 
-    @PostMapping(value = "/voice/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/user/uploadRecord", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity uploadFile(@RequestParam("file") MultipartFile file, @RequestPart("employeeData") String employeeData) throws IOException {
         String message = "";
         try {
@@ -36,24 +37,38 @@ public class VoiceDataController {
         }
     }
 
-    @GetMapping("/voice/{input}")
+    @GetMapping("/user/getRecord/{input}")
     public ResponseEntity<byte[]> downloadVoice(@PathVariable String input) {
         VoiceData voiceData = voiceDataService.downloadVoice(input);
         if (null != voiceData) {
-            Gson gson = new Gson();
-            String data = gson.toJson(voiceData);
+
             if (voiceData.isOptIn()) {
                 return ResponseEntity.ok()
                         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + voiceData.getFileName() + "\"")
-                        .header("empData", data)
+                        .header("Access-Control-Expose-Headers", "empId")
+                        .header("empId", voiceData.getEmployeeId().toString())
                         .body(voiceData.getData());
             } else {
                 return ResponseEntity.ok()
-                        .header("empData", data).body(null);
+                        .header("Access-Control-Expose-Headers", "empId")
+                        .header("empId", voiceData.getEmployeeId().toString())
+                        .body(null);
             }
         } else {
             return new ResponseEntity("Not Record Found", HttpStatus.NO_CONTENT);
         }
+    }
+
+    @PutMapping(value = "/user/updateRecord")
+    public ResponseEntity updateOptIn(@RequestBody VoiceData data) {
+
+        boolean status = voiceDataService.updateOptIn(data);
+        if(status){
+            return new ResponseEntity("Record update successfully " , HttpStatus.OK);
+        }else{
+            return new ResponseEntity("Employee Id : " + data.getEmployeeId() + "Not found" , HttpStatus.NO_CONTENT);
+        }
+
     }
 
 }
