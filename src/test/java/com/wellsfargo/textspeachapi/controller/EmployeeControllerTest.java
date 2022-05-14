@@ -3,6 +3,7 @@ package com.wellsfargo.textspeachapi.controller;
 
 import ch.qos.logback.core.pattern.parser.OptionTokenizer;
 import com.wellsfargo.textspeachapi.model.Employee;
+import com.wellsfargo.textspeachapi.model.VoiceData;
 import com.wellsfargo.textspeachapi.service.EmployeeService;
 import com.wellsfargo.textspeachapi.service.VoiceDataService;
 import org.junit.Before;
@@ -66,16 +67,16 @@ public class EmployeeControllerTest {
     }
     @Test
     public void find_picture_by_uid() throws Exception {
-        Employee employee = new Employee();
-        employee.setEmployeeId(12345);
-        employee.setEmail("abc@wellsfargo.com");
-        employee.setFirstName("John");
-        employee.setLastName("Smith");
-        employee.setLegalName("John Smith");
-        employee.setPreferredName("John");
+        VoiceData voiceData = new VoiceData();
+        voiceData.setEmployeeId(12345);
+        voiceData.setEmail("abc@wellsfargo.com");
+        voiceData.setFirstName("John");
+        voiceData.setLastName("Smith");
+        voiceData.setLegalName("John Smith");
+        voiceData.setPreferredName("John");
         byte[] byteArr = {1,2};
-        employee.setProfileImage(byteArr);
-        when(employeeService.getProfilePicture(employee.getEmployeeId())).thenReturn(Optional.of(employee));
+        voiceData.setProfileImage(byteArr);
+        when(employeeService.getProfilePicture(voiceData.getEmployeeId())).thenReturn(Optional.of(voiceData));
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/employee/profilePicture/12345");
 
