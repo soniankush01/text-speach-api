@@ -1,6 +1,7 @@
 package com.wellsfargo.textspeachapi.controller;
 
 import com.wellsfargo.textspeachapi.model.Employee;
+import com.wellsfargo.textspeachapi.model.VoiceData;
 import com.wellsfargo.textspeachapi.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -38,12 +39,12 @@ public class EmployeeController {
     public ResponseEntity<byte[]> updateProfilePicture(@RequestPart("employeeId") String employeeId,
                                                        @RequestPart(value = "profileImage") MultipartFile profileImage) throws IOException {
 
-        Optional<Employee> employee = employeeService.updateProfilePicture(employeeId,profileImage);
-        if(null != employee){
+        Optional<VoiceData> voiceData = employeeService.updateProfilePicture(employeeId,profileImage);
+        if(null != voiceData){
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + employee.get().getImageName() + "\"")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + voiceData.get().getImageName() + "\"")
 
-                    .body(employee.get().getProfileImage());
+                    .body(voiceData.get().getProfileImage());
 
         }else{
             return new ResponseEntity("No profile found " , HttpStatus.NO_CONTENT);
@@ -54,13 +55,13 @@ public class EmployeeController {
     @GetMapping("employee/profilePicture/{employeeId}")
     public ResponseEntity<byte[]> getProfilePicture(@PathVariable Integer employeeId) {
 
-        Employee employee = employeeService.getProfilePicture(employeeId).get();
-        if (null != employee) {
+        VoiceData voiceData = employeeService.getProfilePicture(employeeId).get();
+        if (null != voiceData) {
 
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +employee.getImageName() + "\"")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +voiceData.getImageName() + "\"")
 
-                    .body(employee.getProfileImage());
+                    .body(voiceData.getProfileImage());
         } else {
             return new ResponseEntity("Not profile Image Found", HttpStatus.NO_CONTENT);
         }
