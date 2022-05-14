@@ -33,21 +33,29 @@ public class VoiceDataService {
     public VoiceData downloadVoice(String input){
         //uid
         if(input.matches(".*[a-zA-Z].*") && input.matches(".*[0-9].*")){
-            return voiceDataRepository.findByUid(input);
+            VoiceData voiceData = voiceDataRepository.findByUid(input);
+            VoiceData voicePrint = getVoiceData(voiceData);
+            if (voicePrint != null) return voicePrint;
         }//email
         else if(input.endsWith(".com")){
 
-            return voiceDataRepository.findByEmail(input);
+            VoiceData voiceData = voiceDataRepository.findByEmail(input);
+            VoiceData voicePrint = getVoiceData(voiceData);
+            if (voicePrint != null) return voicePrint;
         }// emp id
         else if(input.matches("^[0-9]*$")){
 
             Integer empId = Integer.parseInt(input);
-            return voiceDataRepository.findByEmployeeId(empId);
-        }else{
-            return null;
+            VoiceData voiceData =  voiceDataRepository.findByEmployeeId(empId);
+            VoiceData voicePrint = getVoiceData(voiceData);
+            if (voicePrint != null) return voicePrint;
+
         }
 
+        return null;
     }
+
+
 
     public static VoiceData getEmployee(String empData){
         Gson gson = new Gson();
@@ -59,6 +67,25 @@ public class VoiceDataService {
         }
         return null;
 
+    }
+
+    private VoiceData getVoiceData(VoiceData voiceData) {
+        if(null!= voiceData){
+            if(voiceData.isOptIn()){
+                return voiceData;
+            }else{
+                VoiceData voiceData1 = new VoiceData();
+                voiceData1.setEmail(voiceData.getEmail());
+                voiceData1.setEmployeeId(voiceData.getEmployeeId());
+                voiceData1.setLegalName(voiceData.getLegalName());
+                voiceData1.setFirstName(voiceData.getFirstName());
+                voiceData1.setUid(voiceData.getUid());
+                voiceData1.setLastName(voiceData.getLastName());
+                voiceData1.setPreferredName(voiceData.getPreferredName());
+                return voiceData1;
+            }
+        }
+        return null;
     }
 
 }
