@@ -64,4 +64,33 @@ public class EmployeeControllerTest {
         mockMvc.perform(requestBuilder)
                 .andExpect(status().is2xxSuccessful());
     }
+    @Test
+    public void find_picture_by_uid() throws Exception {
+        Employee employee = new Employee();
+        employee.setEmployeeId(12345);
+        employee.setEmail("abc@wellsfargo.com");
+        employee.setFirstName("John");
+        employee.setLastName("Smith");
+        employee.setLegalName("John Smith");
+        employee.setPreferredName("John");
+        byte[] byteArr = {1,2};
+        employee.setProfileImage(byteArr);
+        when(employeeService.getProfilePicture(employee.getEmployeeId())).thenReturn(Optional.of(employee));
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/employee/profilePicture/12345");
+
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isOk());
+    }
+    @Test
+    public void find_employee_picture_no_record() throws Exception {
+
+       Employee employee=null;
+        when(employeeService.getProfilePicture(12345)).thenReturn(Optional.empty());
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/employee/profilePicture/12345");
+
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().is2xxSuccessful());
+    }
     }
