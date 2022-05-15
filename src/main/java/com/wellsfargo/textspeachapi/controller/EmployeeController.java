@@ -3,6 +3,8 @@ package com.wellsfargo.textspeachapi.controller;
 import com.wellsfargo.textspeachapi.model.Employee;
 import com.wellsfargo.textspeachapi.model.VoiceData;
 import com.wellsfargo.textspeachapi.service.EmployeeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,8 @@ import java.util.Optional;
 @RestController
 public class EmployeeController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(EmployeeController.class);
+
     private final EmployeeService employeeService;
 
     @Autowired
@@ -29,8 +33,10 @@ public class EmployeeController {
     public ResponseEntity findEmployee(@PathVariable("employeeId") Integer employeeId){
         Optional<Employee> employee = employeeService.findEmployee(employeeId);
         if(employee.isPresent()) {
+            LOG.info("Employee details found successfully for id: " + employeeId);
             return new ResponseEntity<>(employee, HttpStatus.OK);
         }else {
+            LOG.info("Employee details Not found for id: " + employeeId);
             return new ResponseEntity("Not Found", HttpStatus.NO_CONTENT);
         }
     }

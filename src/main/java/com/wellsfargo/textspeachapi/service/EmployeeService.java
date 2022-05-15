@@ -3,8 +3,9 @@ package com.wellsfargo.textspeachapi.service;
 import com.google.gson.Gson;
 import com.wellsfargo.textspeachapi.model.Employee;
 import com.wellsfargo.textspeachapi.model.VoiceData;
-import com.wellsfargo.textspeachapi.repository.EmployeeRepository;
 import com.wellsfargo.textspeachapi.repository.VoiceDataRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -15,6 +16,8 @@ import java.util.Optional;
 
 @Service
 public class EmployeeService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(EmployeeService.class);
 
     private final VoiceDataRepository voiceDataRepository;
 
