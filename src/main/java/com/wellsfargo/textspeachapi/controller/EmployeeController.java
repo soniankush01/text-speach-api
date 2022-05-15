@@ -1,6 +1,5 @@
 package com.wellsfargo.textspeachapi.controller;
 
-import com.wellsfargo.textspeachapi.model.Employee;
 import com.wellsfargo.textspeachapi.model.VoiceData;
 import com.wellsfargo.textspeachapi.service.EmployeeService;
 import org.slf4j.Logger;
@@ -31,7 +30,7 @@ public class EmployeeController {
 
     @GetMapping("/employee/{employeeId}")
     public ResponseEntity findEmployee(@PathVariable("employeeId") Integer employeeId){
-        Optional<Employee> employee = employeeService.findEmployee(employeeId);
+        Optional<VoiceData> employee = employeeService.findEmployee(employeeId);
         if(employee.isPresent()) {
             LOG.info("Employee details found successfully for id: " + employeeId);
             return new ResponseEntity<>(employee, HttpStatus.OK);

@@ -10,6 +10,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -36,7 +38,7 @@ public class EmployeeControllerTest {
     }
     @Test
     public void find_employee_by_uid() throws Exception {
-        Employee employee = new Employee();
+        VoiceData employee = new VoiceData();
         employee.setEmployeeId(12345);
         employee.setEmail("abc@wellsfargo.com");
         employee.setFirstName("John");
@@ -52,7 +54,7 @@ public class EmployeeControllerTest {
     }
     @Test
     public void find_employee_by_uid_no_record() throws Exception {
-        Employee employee = null;
+        VoiceData employee = null;
 
         when(employeeService.findEmployee(12345)).thenReturn(Optional.ofNullable(employee));
 
@@ -89,5 +91,17 @@ public class EmployeeControllerTest {
 
         mockMvc.perform(requestBuilder)
                 .andExpect(status().is2xxSuccessful());
+    }
+
+    //@Test
+    public void test_success_image_upload() throws Exception {
+        MockMultipartFile file = new MockMultipartFile("profileImage","image.jpeg", MediaType.MULTIPART_FORM_DATA_VALUE,"upload image".getBytes());
+        MockMultipartFile employeeDate = new MockMultipartFile("employeeId",null,"application/json",
+                "{\"employeeId\":\"123\"}".getBytes());
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.multipart(
+                        "/employee/profilePicture").file(file)
+                .file(employeeDate).contentType(MediaType.MULTIPART_FORM_DATA_VALUE);
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isOk());
     }
     }
