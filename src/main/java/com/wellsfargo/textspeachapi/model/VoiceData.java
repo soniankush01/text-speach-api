@@ -32,6 +32,7 @@ public class VoiceData {
     @Type(type="org.hibernate.type.BinaryType")
     private byte[] profileImage;
     private String imageName;
+    private String country;
 
 
     public VoiceData(String fileName, String fileType, byte[] bytes) {

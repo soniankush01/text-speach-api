@@ -38,6 +38,7 @@ public class EmployeeService {
                     voiceData.setPreferredName(e.getPreferredName());
                     voiceData.setLegalName(e.getLegalName());
                     voiceData.setOptIn(e.isOptIn());
+                    voiceData.setCountry(e.getCountry());
                     return voiceData;
                 });
 
