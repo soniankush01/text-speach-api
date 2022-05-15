@@ -91,10 +91,10 @@ public class VoiceDataService {
         return null;
     }
 
-    public boolean updateOptIn(VoiceData data) {
-        VoiceData voiceData = voiceDataRepository.findById(data.getEmployeeId()).get();
+    public boolean updateOptIn(Integer employeeId, boolean optIn) {
+        VoiceData voiceData = voiceDataRepository.findById(employeeId).get();
         if(null !=voiceData){
-            voiceData.setOptIn(data.isOptIn());
+            voiceData.setOptIn(optIn);
              voiceDataRepository.save(voiceData);
              return true;
         }else{

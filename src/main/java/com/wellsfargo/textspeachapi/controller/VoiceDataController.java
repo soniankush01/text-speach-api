@@ -59,14 +59,14 @@ public class VoiceDataController {
         }
     }
 
-    @PutMapping(value = "/user/updateRecord")
-    public ResponseEntity updateOptIn(@RequestBody VoiceData data) {
+    @PutMapping(value = "/user/updateOptIn")
+    public ResponseEntity updateOptIn(@RequestParam("employeeId") Integer employeeId, @RequestHeader boolean optIn) {
 
-        boolean status = voiceDataService.updateOptIn(data);
+        boolean status = voiceDataService.updateOptIn(employeeId,optIn);
         if(status){
             return new ResponseEntity("Record update successfully " , HttpStatus.OK);
         }else{
-            return new ResponseEntity("Employee Id : " + data.getEmployeeId() + "Not found" , HttpStatus.NO_CONTENT);
+            return new ResponseEntity("Employee Id : " + employeeId + "Not found" , HttpStatus.NO_CONTENT);
         }
 
     }
