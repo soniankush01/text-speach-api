@@ -26,18 +26,19 @@ public class EmployeeService {
         this.voiceDataRepository = voiceDataRepository;
      }
 
-    public Optional<Employee> findEmployee(Integer employeeId){
+    public Optional<VoiceData> findEmployee(Integer employeeId){
         return voiceDataRepository.findById(employeeId)
                 .map(e->{
-                    Employee employee = new Employee();
-                    employee.setEmployeeId(e.getEmployeeId());
-                    employee.setUid(e.getUid());
-                    employee.setEmail(e.getEmail());
-                    employee.setFirstName(e.getFirstName());
-                    employee.setLastName(e.getLastName());
-                    employee.setPreferredName(e.getPreferredName());
-                    employee.setLegalName(e.getLegalName());
-                    return employee;
+                    VoiceData voiceData = new VoiceData();
+                    voiceData.setEmployeeId(e.getEmployeeId());
+                    voiceData.setUid(e.getUid());
+                    voiceData.setEmail(e.getEmail());
+                    voiceData.setFirstName(e.getFirstName());
+                    voiceData.setLastName(e.getLastName());
+                    voiceData.setPreferredName(e.getPreferredName());
+                    voiceData.setLegalName(e.getLegalName());
+                    voiceData.setOptIn(e.isOptIn());
+                    return voiceData;
                 });
 
 
@@ -46,7 +47,7 @@ public class EmployeeService {
     public Optional<VoiceData> updateProfilePicture(String employeeId, MultipartFile image) throws IOException {
         String fileName  = StringUtils.cleanPath(image.getOriginalFilename());
         Gson gson = new Gson();
-        Employee employee = gson.fromJson(employeeId,Employee.class);
+        VoiceData employee = gson.fromJson(employeeId,VoiceData.class);
        Optional<VoiceData> emp = voiceDataRepository.findById(employee.getEmployeeId());
         if(emp.isPresent()){
             emp.get().setProfileImage(image.getBytes());

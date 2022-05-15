@@ -28,7 +28,7 @@ public class EmployeeServiceTest {
         VoiceData voiceData = new VoiceData();
         voiceData.setEmployeeId(8173);
         Mockito.when(voiceDataRepository.findById(8173)).thenReturn(Optional.of(voiceData));
-        Optional<Employee> result  = employeeService.findEmployee(voiceData.getEmployeeId());
+        Optional<VoiceData> result  = employeeService.findEmployee(voiceData.getEmployeeId());
         assertEquals(Optional.of(8173),Optional.of(result.get().getEmployeeId()));
     }
 }
