@@ -28,7 +28,7 @@ public class VoiceDataServiceTest {
     @Mock
     private VoiceDataRepository voiceDataRepository;
 
-     @Test
+    // @Test
     public void test_upload_voice() throws IOException {
 
         MultipartFile file = new MockMultipartFile("voice.mp3","voice.mp3","text/audio",

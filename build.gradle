@@ -1,12 +1,26 @@
+buildscript {
+	ext {
+		springBootVersion = '2.6.7'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath 'com.google.cloud.tools:appengine-gradle-plugin:1.3.3'
+	}
+}
+
 plugins {
 	id 'org.springframework.boot' version '2.6.7'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id 'jacoco'
-}
 
+}
+apply plugin: 'com.google.cloud.tools.appengine'
 group = 'com.wellsfargo'
-version = '0.0.1-SNAPSHOT'
+version = 'text-speech-api'
 sourceCompatibility = '11'
 
 repositories {
@@ -67,11 +81,11 @@ jacocoTestCoverageVerification {
 		rule {
 			limit {
 				counter = 'LINE'
-				minimum = 0.780
+				minimum = 0.660
 			}
 			limit {
 				counter = 'BRANCH'
-				minimum = 0.130
+				minimum = 0.120
 			}
 		}
 	}
